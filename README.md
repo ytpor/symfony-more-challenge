@@ -44,6 +44,13 @@ If your environment can already run Symfony.
 * You need to have a database created using the credentials you have defined in the previous section.
 * Install the packages `composer install`
 * Run the test `php bin/phpunit`
+* Run migration.
+
+```
+# Update migration and execute migration
+php bin/console make:migration
+php bin/console doctrine:migrations:migrate
+```
 
 ### Docker
 
@@ -54,6 +61,15 @@ To run this in Docker.
 ```
 docker-compose run --rm php composer install
 ```
+
+* Run migration.
+
+```
+# Update migration and execute migration
+docker compose run --rm php php bin/console make:migration
+docker compose run --rm php php bin/console doctrine:migrations:migrate
+```
+
 * Start the container
 ```
 docker-compose up -d

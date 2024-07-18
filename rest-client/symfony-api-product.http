@@ -1,0 +1,45 @@
+@hostname = localhost
+@port = 8062
+@host = {{hostname}}:{{port}}
+@contentType = application/json
+
+### index
+GET http://{{host}}/api/product HTTP/1.1
+
+### show
+GET http://{{host}}/api/product/22 HTTP/1.1
+
+### show by category id
+GET http://{{host}}/api/product/category/19 HTTP/1.1
+
+###
+POST http://{{host}}/api/product HTTP/1.1
+Content-Type: {{contentType}}
+
+{
+    "category_id": 99,
+    "name": "999999",
+    "description": "foobarx",
+    "brand": "foobarx",
+    "model": "foobarxxx",
+    "unit_price": 12.123123
+}
+
+### update
+
+PUT  http://{{host}}/api/product/1 HTTP/1.1
+Content-Type: {{contentType}}
+
+{
+    "category_id": 77,
+    "name": "foobarxss",
+    "description": "foobarxsss",
+    "brand": "foobarxss",
+    "model": "foobarxxx",
+    "unit_price": 14.50
+}
+
+### delete
+
+DELETE  http://{{host}}/api/product/14 HTTP/1.1
+

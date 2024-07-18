@@ -1,0 +1,9 @@
+actor: ApiTester
+suite_namespace: App\Tests\Api
+modules:
+    # enable helpers as array
+    enabled:
+        - REST:
+            url: http://symfony-more-challenge.local
+            depends: PhpBrowser
+            part: Json
