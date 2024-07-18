@@ -1,0 +1,23 @@
+nelmio_api_doc:
+    documentation:
+        servers:
+          - url: '%env(resolve:API_DOC_HTTP_URL)%'
+            description: API over HTTP
+        info:
+            title: Symfony More Challenge
+            description: Find all the awesome APIs here!
+            version: 1.0.0
+            x-build: #CommitHash
+        # components:
+        #     securitySchemes:
+        #         Bearer:
+        #             type: http
+        #             scheme: bearer
+        #             bearerFormat: JWT
+        # security:
+        #     - Bearer: []
+    areas: # to filter documented areas
+        path_patterns:
+            - ^/api(?!/doc$) # Accepts routes under /api except /api/doc
+        # host_patterns: # document only routes with a host of the form api.*
+        #     - ^api\.
