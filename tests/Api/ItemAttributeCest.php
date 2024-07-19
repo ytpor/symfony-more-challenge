@@ -27,8 +27,8 @@ class ItemAttributeCest extends BaseCest
 
         // create record
         $I->sendPOST('/api/attribute', [
-            'name' => 'name_' . time(),
-            'description' => 'desc_' . time(),
+            'name' => 'item_name_' . time(),
+            'description' => 'item_desc_' . time(),
         ]);
         $response = $I->grabResponse();
         $I->amGoingTo('see response: '. $response);
@@ -45,8 +45,8 @@ class ItemAttributeCest extends BaseCest
 
         // update record
         $I->sendPUT('/api/attribute/' . $id, [
-            'name' => 'name_' . time(),
-            'description' => 'desc_' . time(),
+            'name' => 'item_name_' . time(),
+            'description' => 'item_desc_' . time(),
         ]);
         $response = $I->grabResponse();
         $I->amGoingTo('see response: '. $response);

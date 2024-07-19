@@ -27,8 +27,8 @@ class ProductAttributeCest extends BaseCest
 
         // need to create a category
         $I->sendPOST('/api/category', [
-            'name' => 'name_' . time(),
-            'description' => 'desc_' . time(),
+            'name' => 'attribute_name_' . time(),
+            'description' => 'attribute_desc_' . time(),
         ]);
         $response = $I->grabResponse();
         $I->amGoingTo('see response: '. $response);
@@ -55,8 +55,8 @@ class ProductAttributeCest extends BaseCest
 
         // and also an attribute
         $I->sendPOST('/api/attribute', [
-            'name' => 'name_' . time(),
-            'description' => 'desc_' . time(),
+            'name' => 'attribute_name_' . time(),
+            'description' => 'attribute_desc_' . time(),
         ]);
         $response = $I->grabResponse();
         $I->amGoingTo('see response: '. $response);

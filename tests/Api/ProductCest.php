@@ -40,8 +40,8 @@ class ProductCest extends BaseCest
         // create record
         $I->sendPOST('/api/product', [
             'category_id' => $category_id,
-            'name' => 'name_' . time(),
-            'description' => 'desc_' . time(),
+            'name' => 'prod_name_' . time(),
+            'description' => 'prod_desc_' . time(),
             'brand' => 'brand_' . time(),
             'model' => 'model_' . time(),
             'unit_price' => 88,
@@ -62,8 +62,8 @@ class ProductCest extends BaseCest
         // update record
         $I->sendPUT('/api/product/' . $id, [
             'category_id' => $category_id,
-            'name' => 'name_' . time(),
-            'description' => 'desc_' . time(),
+            'name' => 'prod_name_' . time(),
+            'description' => 'prod_desc_' . time(),
             'brand' => 'brand_' . time(),
             'model' => 'model_' . time(),
             'unit_price' => 88,

@@ -27,8 +27,8 @@ class CategoryCest extends BaseCest
 
         // create record
         $I->sendPOST('/api/category', [
-            'name' => 'name_' . time(),
-            'description' => 'desc_' . time(),
+            'name' => 'cat_name_' . time(),
+            'description' => 'cat_desc_' . time(),
         ]);
         $response = $I->grabResponse();
         $I->amGoingTo('see response: '. $response);
@@ -45,8 +45,8 @@ class CategoryCest extends BaseCest
 
         // update record
         $I->sendPUT('/api/category/' . $id, [
-            'name' => 'name_' . time(),
-            'description' => 'desc_' . time(),
+            'name' => 'cat_name_' . time(),
+            'description' => 'cat_desc_' . time(),
         ]);
         $response = $I->grabResponse();
         $I->amGoingTo('see response: '. $response);
