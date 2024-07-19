@@ -55,7 +55,7 @@ class ProductController extends BaseController
     }
 
     /**
-     * Show a product by category.
+     * Show products by category.
      */
     #[Route('/api/product/category/{category_id}', methods: ['GET'])]
     #[OA\Tag(name: 'Product')]
