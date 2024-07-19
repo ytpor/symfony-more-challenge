@@ -7,18 +7,35 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityNotFoundException;
 use Psr\Log\LoggerInterface;
+use Symfony\Contracts\Cache\ItemInterface;
+use Symfony\Contracts\Cache\CacheInterface;
 
 /**
  * @extends ServiceEntityRepository<Product>
  */
 class ProductRepository extends ServiceEntityRepository
 {
+    private $cache;
     private $logger;
 
-    public function __construct(ManagerRegistry $registry, LoggerInterface $logger)
+    public function __construct(
+        ManagerRegistry $registry,
+        LoggerInterface $logger,
+        CacheInterface $cache
+    )
     {
         parent::__construct($registry, Product::class);
+        $this->cache = $cache;
         $this->logger = $logger;
+    }
+
+    public function findAllBy(): array
+    {
+        return $this->cache->get('product_all', function (ItemInterface $item) {
+            $item->expiresAfter(3600); // Cache for 1 hour
+
+            return $this->findBy([]);
+        });
     }
 
     public function findById(int $id): ?Product
@@ -64,4 +81,10 @@ class ProductRepository extends ServiceEntityRepository
 
         return $product;
     }
+
+    public function clearCachedData(): void
+    {
+        $this->cache->delete('product_all');
+    }
+
 }

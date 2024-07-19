@@ -24,12 +24,10 @@ class ProductController extends BaseController
     #[OA\Tag(name: 'Product')]
     #[Security(name: 'Bearer')]
     public function index(
-        EntityManagerInterface $entityManager
+        ProductRepository $productRepository,
     ): JsonResponse
     {
-        $product = $entityManager
-            ->getRepository(Product::class)
-            ->findAll();
+        $product = $productRepository->findAllBy();
 
         return $this->json($product);
     }
@@ -82,6 +80,7 @@ class ProductController extends BaseController
     #[Security(name: 'Bearer')]
     public function create(
         CategoryRepository $categoryRepository,
+        ProductRepository $productRepository,
         EntityManagerInterface $entityManager,
         #[MapRequestPayload] ProductDto $productDto
     ): JsonResponse
@@ -100,6 +99,8 @@ class ProductController extends BaseController
 
             $entityManager->persist($product);
             $entityManager->flush();
+
+            $productRepository->clearCachedData();
 
             return $this->json([
                 'id' => $product->getId(),
@@ -141,6 +142,8 @@ class ProductController extends BaseController
             $entityManager->persist($product);
             $entityManager->flush();
 
+            $productRepository->clearCachedData();
+
             return $this->json('', JsonResponse::HTTP_NO_CONTENT);
         } catch (EntityNotFoundException $e) {
             return $this->json([
@@ -165,6 +168,8 @@ class ProductController extends BaseController
             $product = $productRepository->findById($id);
             $entityManager->remove($product);
             $entityManager->flush();
+
+            $productRepository->clearCachedData();
 
             return $this->json('', JsonResponse::HTTP_NO_CONTENT);
         } catch (EntityNotFoundException $e) {

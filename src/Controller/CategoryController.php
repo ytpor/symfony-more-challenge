@@ -23,12 +23,10 @@ class CategoryController  extends BaseController
     #[OA\Tag(name: 'Category')]
     #[Security(name: 'Bearer')]
     public function index(
-        EntityManagerInterface $entityManager
+        CategoryRepository $categoryRepository
     ): JsonResponse
     {
-        $category = $entityManager
-            ->getRepository(Category::class)
-            ->findAll();
+        $category = $categoryRepository->findAllBy();
 
         return $this->json($category);
     }
@@ -60,6 +58,7 @@ class CategoryController  extends BaseController
     #[OA\Tag(name: 'Category')]
     #[Security(name: 'Bearer')]
     public function create(
+        CategoryRepository $categoryRepository,
         EntityManagerInterface $entityManager,
         #[MapRequestPayload] CategoryDto $categoryDto
     ): JsonResponse
@@ -71,6 +70,8 @@ class CategoryController  extends BaseController
 
             $entityManager->persist($category);
             $entityManager->flush();
+
+            $categoryRepository->clearCachedData();
 
             return $this->json([
                 'id' => $category->getId(),
@@ -104,6 +105,8 @@ class CategoryController  extends BaseController
             $entityManager->persist($category);
             $entityManager->flush();
 
+            $categoryRepository->clearCachedData();
+
             return $this->json('', JsonResponse::HTTP_NO_CONTENT);
         } catch (EntityNotFoundException $e) {
             return $this->json([
@@ -128,6 +131,8 @@ class CategoryController  extends BaseController
             $category = $categoryRepository->findById($id);
             $entityManager->remove($category);
             $entityManager->flush();
+
+            $categoryRepository->clearCachedData();
 
             return $this->json('', JsonResponse::HTTP_NO_CONTENT);
         } catch (EntityNotFoundException $e) {
