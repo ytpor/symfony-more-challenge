@@ -25,6 +25,7 @@ class ItemAttributeCest extends BaseCest
     {
         $I->haveHttpHeader('Content-Type', 'application/json');
 
+        // create record
         $I->sendPOST('/api/attribute', [
             'name' => 'name_' . time(),
             'description' => 'desc_' . time(),
@@ -36,11 +37,13 @@ class ItemAttributeCest extends BaseCest
         $id = $I->grabDataFromResponseByJsonPath('$.id')[0];
         $I->amGoingTo('see id: '. $id);
 
+        // show record
         $I->sendGET('/api/attribute/' . $id, []);
         $response = $I->grabResponse();
         $I->amGoingTo('see response: '. $response);
         $I->canSeeResponseCodeIs(200);
 
+        // update record
         $I->sendPUT('/api/attribute/' . $id, [
             'name' => 'name_' . time(),
             'description' => 'desc_' . time(),
@@ -60,6 +63,7 @@ class ItemAttributeCest extends BaseCest
     {
         $I->haveHttpHeader('Content-Type', 'application/json');
 
+        // create record
         $I->sendPOST('/api/attribute', []);
         $response = $I->grabResponse();
         $I->amGoingTo('see response: '. $response);
@@ -70,6 +74,7 @@ class ItemAttributeCest extends BaseCest
     {
         $I->haveHttpHeader('Content-Type', 'application/json');
 
+        // update record
         $I->sendPUT('/api/attribute/999999', []);
         $response = $I->grabResponse();
         $I->amGoingTo('see response: '. $response);

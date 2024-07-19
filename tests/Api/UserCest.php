@@ -25,6 +25,7 @@ class UserCest extends BaseCest
     {
         $I->haveHttpHeader('Content-Type', 'application/json');
 
+        // create record
         $I->sendPOST('/api/user', [
             'email' => time() . '@email.com',
             'password' => uniqid(),
@@ -39,10 +40,23 @@ class UserCest extends BaseCest
         $id = $I->grabDataFromResponseByJsonPath('$.id')[0];
         $I->amGoingTo('see id: '. $id);
 
+        // show record
         $I->sendGET('/api/user/' . $id, []);
         $response = $I->grabResponse();
         $I->amGoingTo('see response: '. $response);
         $I->canSeeResponseCodeIs(200);
+
+        // update record
+        $I->sendPUT('/api/user/' . $id, [
+            'email' => time() . '@email.com',
+            'password' => uniqid(),
+            'name' => 'name_' . time(),
+            'phone' => 'phone_' . time(),
+            'address' => 'address_' . time(),
+        ]);
+        $response = $I->grabResponse();
+        $I->amGoingTo('see response: '. $response);
+        $I->canSeeResponseCodeIs(204);
 
         // clean up
         $I->sendDELETE('/api/user/' . $id, []);
@@ -55,6 +69,7 @@ class UserCest extends BaseCest
     {
         $I->haveHttpHeader('Content-Type', 'application/json');
 
+        // create record
         $I->sendPOST('/api/user', []);
         $response = $I->grabResponse();
         $I->amGoingTo('see response: '. $response);
@@ -65,6 +80,7 @@ class UserCest extends BaseCest
     {
         $I->haveHttpHeader('Content-Type', 'application/json');
 
+        // update record
         $I->sendPUT('/api/user/999999', []);
         $response = $I->grabResponse();
         $I->amGoingTo('see response: '. $response);

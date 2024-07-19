@@ -37,6 +37,7 @@ class ProductCest extends BaseCest
         $category_id = $I->grabDataFromResponseByJsonPath('$.id')[0];
         $I->amGoingTo('see category_id: '. $category_id);
 
+        // create record
         $I->sendPOST('/api/product', [
             'category_id' => $category_id,
             'name' => 'name_' . time(),
@@ -52,11 +53,13 @@ class ProductCest extends BaseCest
         $id = $I->grabDataFromResponseByJsonPath('$.id')[0];
         $I->amGoingTo('see id: '. $id);
 
+        // show record
         $I->sendGET('/api/product/' . $id, []);
         $response = $I->grabResponse();
         $I->amGoingTo('see response: '. $response);
         $I->canSeeResponseCodeIs(200);
 
+        // update record
         $I->sendPUT('/api/product/' . $id, [
             'category_id' => $category_id,
             'name' => 'name_' . time(),
@@ -85,6 +88,7 @@ class ProductCest extends BaseCest
     {
         $I->haveHttpHeader('Content-Type', 'application/json');
 
+        // create record
         $I->sendPOST('/api/product', []);
         $response = $I->grabResponse();
         $I->amGoingTo('see response: '. $response);
@@ -95,6 +99,7 @@ class ProductCest extends BaseCest
     {
         $I->haveHttpHeader('Content-Type', 'application/json');
 
+        // update record
         $I->sendPUT('/api/product/999999', []);
         $response = $I->grabResponse();
         $I->amGoingTo('see response: '. $response);
