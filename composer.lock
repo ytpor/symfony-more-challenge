@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bde8d05c61bbba84a05fba7f918ff529",
+    "content-hash": "bfc69f72a571d7068f33f408e64cdff0",
     "packages": [
         {
             "name": "defuse/php-encryption",
@@ -2340,6 +2340,59 @@
                 "source": "https://github.com/phpDocumentor/TypeResolver/tree/1.8.2"
             },
             "time": "2024-02-23T11:10:43+00:00"
+        },
+        {
+            "name": "phpjuice/opencf",
+            "version": "v2.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/phpjuice/opencf.git",
+                "reference": "e9cb06766c6d5d1e3cfdb801204e38fc55a04305"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/phpjuice/opencf/zipball/e9cb06766c6d5d1e3cfdb801204e38fc55a04305",
+                "reference": "e9cb06766c6d5d1e3cfdb801204e38fc55a04305",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.4|^8.0|^8.1"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^3.34",
+                "pestphp/pest": "^1.23",
+                "phpstan/phpstan": "^1.10"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "OpenCF\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Mohammed Elhaouari",
+                    "email": "phpjuice@gmail.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "PHP implementation of the (Weighted Slopeone,Cosine, Weighted Cosine) rating-based collaborative filtering schemes.",
+            "keywords": [
+                "collaborative filtering",
+                "collaborative filtering engine",
+                "recommendation",
+                "recommender",
+                "weighted slope one"
+            ],
+            "support": {
+                "issues": "https://github.com/phpjuice/opencf/issues",
+                "source": "https://github.com/phpjuice/opencf"
+            },
+            "time": "2023-10-05T12:33:27+00:00"
         },
         {
             "name": "phpstan/phpdoc-parser",
