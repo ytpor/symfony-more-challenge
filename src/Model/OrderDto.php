@@ -8,6 +8,7 @@ class OrderDto
 {
     public function __construct(
         #[Assert\NotBlank]
+        #[Assert\Positive]
         public readonly int $user_id,
 
         #[Assert\All(

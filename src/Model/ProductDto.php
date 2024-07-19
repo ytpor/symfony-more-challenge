@@ -8,6 +8,7 @@ class ProductDto
 {
     public function __construct(
         #[Assert\NotBlank]
+        #[Assert\Positive]
         public readonly int $category_id,
 
         #[Assert\NotBlank]
