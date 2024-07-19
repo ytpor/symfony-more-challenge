@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Order;
 use App\Entity\OrderProduct;
+use App\Model\ProductRatingDto;
 use App\Model\OrderDto;
 use App\Model\OrderUpdateDto;
 use App\Repository\OrderRepository;
@@ -156,10 +157,10 @@ class OrderController extends BaseController
     /**
      * Update order status.
      */
-    #[Route('/api/order/{id}', methods: ['PUT'], format: 'json')]
+    #[Route('/api/order/status/{id}', methods: ['PUT'], format: 'json')]
     #[OA\Tag(name: 'Order')]
     #[Security(name: 'Bearer')]
-    public function update(
+    public function updateStatus(
         OrderRepository $orderRepository,
         EntityManagerInterface $entityManager,
         #[MapRequestPayload] OrderUpdateDto $orderDto,
@@ -172,6 +173,38 @@ class OrderController extends BaseController
             $order->setStatus($orderDto->status);
 
             $entityManager->persist($order);
+            $entityManager->flush();
+
+            return $this->json('', JsonResponse::HTTP_NO_CONTENT);
+        } catch (EntityNotFoundException $e) {
+            return $this->json([
+                'error' => $e->getMessage(),
+            ], JsonResponse::HTTP_NOT_FOUND);
+        }
+    }
+
+    /**
+     * Update order product rating.
+     */
+    #[Route('/api/order/product-rating/{id}', methods: ['PUT'], format: 'json')]
+    #[OA\Tag(name: 'Order')]
+    #[Security(name: 'Bearer')]
+    public function updateRating(
+        OrderRepository $orderRepository,
+        OrderProductRepository $productRepository,
+        EntityManagerInterface $entityManager,
+        #[MapRequestPayload] ProductRatingDto $orderDto,
+        int $id
+    ): JsonResponse
+    {
+        try {
+            // Use this to make sure that the ids exists
+            $order = $orderRepository->findById($id);
+            $product = $productRepository->findByOrderProductId($id, $orderDto->product_id);
+
+            $product->setRating($orderDto->rating);
+
+            $entityManager->persist($product);
             $entityManager->flush();
 
             return $this->json('', JsonResponse::HTTP_NO_CONTENT);

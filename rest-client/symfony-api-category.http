@@ -14,8 +14,8 @@ POST http://{{host}}/api/category HTTP/1.1
 Content-Type: {{contentType}}
 
 {
-    "name": "foobarx",
-    "description": "foobarxxx"
+    "name": "Bag",
+    "description": "Bag"
 }
 
 ### update

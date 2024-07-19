@@ -68,6 +68,7 @@ class OrderCest extends BaseCest
         $product_id = $I->grabDataFromResponseByJsonPath('$.id')[0];
         $I->amGoingTo('see product_id: '. $product_id);
 
+        // create record
         $I->sendPOST('/api/order', [
             'user_id' => $user_id,
             'products' => [
@@ -88,13 +89,24 @@ class OrderCest extends BaseCest
         $id = $I->grabDataFromResponseByJsonPath('$.id')[0];
         $I->amGoingTo('see id: '. $id);
 
+        // show record
         $I->sendGET('/api/order/' . $id, []);
         $response = $I->grabResponse();
         $I->amGoingTo('see response: '. $response);
         $I->canSeeResponseCodeIs(200);
 
-        $I->sendPUT('/api/order/' . $id, [
+        // update record status
+        $I->sendPUT('/api/order/status/' . $id, [
             'status' => 'status',
+        ]);
+        $response = $I->grabResponse();
+        $I->amGoingTo('see response: '. $response);
+        $I->canSeeResponseCodeIs(204);
+
+        // update record rating
+        $I->sendPUT('/api/order/product-rating/' . $id, [
+            'product_id' => $product_id,
+            'rating' => 9,
         ]);
         $response = $I->grabResponse();
         $I->amGoingTo('see response: '. $response);
@@ -121,6 +133,7 @@ class OrderCest extends BaseCest
     {
         $I->haveHttpHeader('Content-Type', 'application/json');
 
+        // create record
         $I->sendPOST('/api/order', []);
         $response = $I->grabResponse();
         $I->amGoingTo('see response: '. $response);
@@ -131,7 +144,8 @@ class OrderCest extends BaseCest
     {
         $I->haveHttpHeader('Content-Type', 'application/json');
 
-        $I->sendPUT('/api/order/999999', []);
+        // update record
+        $I->sendPUT('/api/order/status/999999', []);
         $response = $I->grabResponse();
         $I->amGoingTo('see response: '. $response);
         $I->canSeeResponseCodeIs(422);

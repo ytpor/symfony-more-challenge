@@ -14,11 +14,11 @@ POST http://{{host}}/api/user HTTP/1.1
 Content-Type: {{contentType}}
 
 {
-    "email": "444@444.com",
+    "email": "111@111.com",
     "password": "password",
-    "name": "name",
-    "phone": "name",
-    "address": "address"
+    "name": "111",
+    "phone": "111",
+    "address": "111"
 }
 
 ### update

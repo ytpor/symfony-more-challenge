@@ -44,6 +44,9 @@ class OrderProduct extends BaseEntity
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
     private ?string $total = null;
 
+    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    private int $rating = 0;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -165,6 +168,18 @@ class OrderProduct extends BaseEntity
     public function setTotal(string $total): static
     {
         $this->total = $total;
+
+        return $this;
+    }
+
+    public function getRating(): ?int
+    {
+        return $this->rating;
+    }
+
+    public function setRating(?int $rating): static
+    {
+        $this->rating = $rating;
 
         return $this;
     }
