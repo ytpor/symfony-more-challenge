@@ -43,7 +43,6 @@ If your environment can already run Symfony.
 
 * You need to have a database created using the credentials you have defined in the previous section.
 * Install the packages `composer install`
-* Run the test `php bin/phpunit`
 * Run migration.
 
 ```
@@ -52,11 +51,13 @@ php bin/console make:migration
 php bin/console doctrine:migrations:migrate
 ```
 
+* Run the test `vendor/bin/codecept run`
+
 ### Docker
 
 To run this in Docker.
 
-* You need not manually create any database. `docker-compose.yaml` alredy handles this.
+* You need not manually create any database. `docker-compose.yaml` already handles this.
 * Install the packages
 ```
 docker-compose run --rm php composer install
@@ -83,21 +84,23 @@ http://127.0.0.1:8062
 http://127.0.0.1:8062/api/doc
 ```
 
-## Notes
+* Run the test
 
-* The function can be found at `src/Service/EstimatorService.php`
-* The unit and api be found within the `test/` directory
-    * Run the test `vendor/bin/codecept run`
-* Only entity properties relevant to this challenge is defined.
-* Find the entities in `src/Entity`
+```
+docker-compose run --rm php vendor/bin/codecept run
+```
 
-## Assumptions
+## Functionality
 
-In order to avoid making the solution overly complex, here are some assumptions and boundaries.
+### 1. User Management (Security Focus)
 
-*
+User authentication and authorization has **not** been put in place. The existance of an API to create users has been crafted.
 
-## Entity Relationship Diagrams
+### 2. Product Management (Data Modeling)
+
+Please refer to the ER Diagram for how the different data models relate to each other.
+
+#### Entity Relationship Diagrams
 
 ```mermaid
 ---
@@ -111,3 +114,85 @@ erDiagram
     product ||--o{ product_attribute : "might have"
     product_attribute ||--|{ attribute : have
 ```
+
+### 3. Purchase History (Data Persistence)
+
+The user purchase are stored in the `order` and `order_product` tables. A snapshot of the product details is being stored in the `order_product`, while it still has a reference to the actual product through `product_id`.
+
+### 4. Recommendation Engine (Algorithmic Thinking)
+
+There is a rudimentary effort done for this topic. The intention is to use a collaborative filtering to achieve this. The code can be found at `src/Service/RecommendService.php`.
+
+### 5. API Design & Scalability (Architecture & Best Practices):
+
+* The documentation for the REST API is generated using  annotations within the controller. It followe the RESTful principles and utilizes proper HTTP status codes. It can be accessed at `api/doc`, eg. http://localhost/api/doc
+
+![API doc](/doc/images/api-doc.png)
+
+* Database migration is done through the use of [Doctrine Migrations Bundle](https://symfony.com/bundles/DoctrineMigrationsBundle/current/index.html)
+
+* `Redis` used as the caching mechanisms. Some common queries are being cached.
+
+
+```php
+// src/Repository/CategoryRepository.php
+
+// ...
+use Symfony\Contracts\Cache\ItemInterface;
+use Symfony\Contracts\Cache\CacheInterface;
+// ...
+
+    private $cache;
+    private $logger;
+
+    public function __construct(
+        ManagerRegistry $registry,
+        LoggerInterface $logger,
+        CacheInterface $cache
+    )
+    {
+        parent::__construct($registry, Category::class);
+        $this->cache = $cache;
+        $this->logger = $logger;
+    }
+
+// ...
+
+    public function findAllBy(): array
+    {
+        return $this->cache->get('category_all', function (ItemInterface $item) {
+            $item->expiresAfter(3600); // Cache for 1 hour
+
+            return $this->findBy([]);
+        });
+    }
+
+// ...
+```
+
+## 6. Unit Tests and API Tests
+
+* Test scripts can be found in the `tests` directory.
+
+```
+# Run the test - Make sure the server is running
+docker-compose run --rm php vendor/bin/codecept run
+```
+
+## 7. Logging/Monitoring
+
+* [Monolog](https://github.com/Seldaek/monolog) through the [Monolog Bundle](https://symfony.com/doc/current/logging.html#monolog) is currently being used. For future expansion, it can send logs to verious web services for application monitoring, eg. [Datadog](https://docs.datadoghq.com/logs/log_collection/php/?tab=phpmonolog)
+
+```php
+// src/Repository/CategoryRepository.php
+
+// ...
+use Psr\Log\LoggerInterface;
+// ...
+
+$this->logger->error($message);
+```
+
+## 8. Scalability Design
+
+* This API can run as a Docker container.
